@@ -93,4 +93,9 @@ Disable chrome background processes after shutdown
 ```bash
 gsettings set org.gnome.nautilus.preferences show-delete-permanently true
 ```
-
+### fix timezone descrepency in win10 dual boot
+Do in win10 cmd (admin)
+```winbatch
+Reg add HKLM\SYSTEM\CurrentControlSet\Control\TimeZoneInformation /v RealTimeIsUniversal /t REG_QWORD /d 1
+```
+Disable win10 automatic time and reboot.
