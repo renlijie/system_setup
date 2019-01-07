@@ -112,3 +112,6 @@ function st () { (/opt/sublime_text/sublime_text "$@" &) }
 # Example aliases
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
+
+# Ctrl+U deletes to the beginning of line.
+bindkey \^U backward-kill-line
