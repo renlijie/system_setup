@@ -5,8 +5,8 @@ Assuming minimal install + updates + 3rd party software.
 ### color scheme
 ```bash
 sudo apt-get install dconf-cli
-git clone https://github.com/Anthony25/gnome-terminal-colors-solarized.git
-cd ~/gnome-terminal-colors-solarized
+git clone https://github.com/Anthony25/gnome-terminal-colors-solarized.git ~/.terminal-solarized
+cd ~/.terminal-solarized
 ./install.sh
 ```
 
@@ -14,19 +14,13 @@ cd ~/gnome-terminal-colors-solarized
 ```bash
 sudo apt install vim
 ```
-### pathogen
-```bash
-mkdir -p ~/.vim/autoload ~/.vim/bundle && \
-curl -LSso ~/.vim/autoload/pathogen.vim https://tpo.pe/pathogen.vim
-```
-### color sheme
-```bash
-cd ~/.vim/bundle
-git clone git://github.com/altercation/vim-colors-solarized.git
-```
 ### vimrc
 ```bash
 echo "source ~/dotfiles/_vimrc" > ~/.vimrc
+```
+### plugins
+```vim
+:PlugInstall
 ```
 
 ## zsh
@@ -41,15 +35,20 @@ sh -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/mas
 ### pure prompt
 ```bash
 cd
-git clone https://github.com/sindresorhus/pure.git
+git clone https://github.com/sindresorhus/pure.git ~/.pure
 mkdir ~/.zfunctions
-cd ~/pure
+cd ~/.pure
 ln -s "$PWD/pure.zsh" "$HOME/.zfunctions/prompt_pure_setup"
 ln -s "$PWD/async.zsh" "$HOME/.zfunctions/async"
 ```
 ### zshrc
 ```bash
 echo "source ~/dotfiles/_zshrc" > ~/.zshrc
+```
+### fzf
+```bash
+git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf
+~/.fzf/install
 ```
 
 ## tensorflow
