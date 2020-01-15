@@ -2,7 +2,7 @@
 Assuming minimal install + updates + 3rd party software.
 
 ## terminal
-### color scheme
+### color scheme not needed anymore
 ```bash
 sudo apt-get install dconf-cli
 git clone https://github.com/Anthony25/gnome-terminal-colors-solarized.git ~/.terminal-solarized
@@ -29,8 +29,7 @@ sudo apt install zsh
 ```
 ### on-my-zsh
 ```bash
-sudo apt install curl
-sh -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"
+sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
 ```
 ### pure prompt
 ```bash
