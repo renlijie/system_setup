@@ -8,7 +8,7 @@ export ZSH="/home/lijie/.oh-my-zsh"
 export VISUAL=vim
 export EDITOR="$VISUAL"
 
-fpath=( "$HOME/.zfunctions" $fpath )
+fpath+=( "$HOME/.zsh/pure" "$HOME/.zsh/zfunctions" )
 
 # Set name of the theme to load --- if set to "random", it will
 # load a random theme each time oh-my-zsh is loaded, in which case,
@@ -84,9 +84,6 @@ prompt pure
 
 # User configuration
 
-alias gitk=gitg
-function st () { (/opt/sublime_text/sublime_text "$@" &) }
-
 # export MANPATH="/usr/local/man:$MANPATH"
 
 # You may need to manually set your language environment
@@ -119,3 +116,4 @@ bindkey \^U backward-kill-line
 
 setopt nonomatch
 
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh

@@ -64,3 +64,4 @@ nnoremap ; :
 imap jj <Esc>
 
 autocmd VimEnter * Goyo
+
