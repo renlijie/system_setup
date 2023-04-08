@@ -56,9 +56,11 @@ rm cuda-repo-wsl-ubuntu-12-1-local_12.1.0-1_amd64.deb
 ```
 
 # github https://github.com/settings/keys
+```bash
 git config --global user.email "...@gmail.com"
 git config --global user.name "..."
 ssh-keygen -t ed25519 -C "...@gmail.com"
 eval "$(ssh-agent -s)"
 ssh-add ~/.ssh/id_ed25519
 cat ~/.ssh/id_ed25519.pub | clip.exe
+```
