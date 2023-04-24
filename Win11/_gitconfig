@@ -1,0 +1,20 @@
+[core]
+	editor = \"C:\\Users\\lijie\\AppData\\Local\\Programs\\Microsoft VS Code\\bin\\code.cmd\" --wait
+
+[user]
+	email = 
+	name = 
+
+[merge]
+	tool = sublimerge
+[mergetool]
+	prompt = false
+[mergetool "sublimerge"]
+	cmd = subl -n --wait \"$REMOTE\" \"$BASE\" \"$LOCAL\" \"$MERGED\" --command \"sublimerge_diff_views\"
+	trustExitCode = false
+[diff]
+	tool = sublimerge
+[difftool]
+    prompt = false
+[difftool "sublimerge"]
+	cmd = subl -n --wait \"$LOCAL\" \"$REMOTE\" --command \"sublimerge_diff_views {\\\"left_read_only\\\": true, \\\"right_read_only\\\": false}\"
