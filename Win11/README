@@ -1,9 +1,19 @@
 WSL
 
 Terminal
-sublime text
-git
-python3
+
+SublimeText
+Install packages:
+ConvertToUTF8
+Sublimerge
+
+Python3
 
 Git
 Restore C:\Users\{username}\.gitconfig and fill in user and email variables.
+
+Locale Emulator (Add Chinese / Japanese to sub-context-menu)
+https://xupefei.github.io/Locale-Emulator/
+
+Ventoy (Use NTFS)
+PE https://www.wepe.com.cn/download.html
