@@ -1,6 +1,6 @@
 # WSL 配置
 
-本文面向 WSL 2 中的 Ubuntu。请在 Ubuntu 终端中以普通 Linux 用户运行命令，不要以 `root` 运行 setup。
+本文面向 WSL 2 中的 Ubuntu。请在 Ubuntu 终端中以普通 Linux 用户运行命令，不要以 `root` 运行安装脚本。
 
 如果尚未安装 WSL 或 Ubuntu，请先参考 [Microsoft WSL 安装指南](https://learn.microsoft.com/windows/wsl/install)。
 
@@ -16,7 +16,7 @@ cd "$HOME/system_setup"
 ./WSL/setup.sh
 ```
 
-先安装 Git 才能克隆仓库。setup 会安装 Vim、Zsh、Python 虚拟环境支持等基础软件，以及 Oh My Zsh 和 fzf，并应用本仓库的 Vim/Zsh 配置。fzf 每次都会安装，Zsh 会自动设为登录 shell。**setup 不会安装 JAX 或 CUDA。**
+先安装 Git 才能克隆仓库。安装脚本会安装 Vim、Zsh、Python 虚拟环境支持等基础软件，以及 Oh My Zsh 和 fzf，并应用本仓库的 Vim/Zsh 配置。每次运行都会安装 fzf、将 Zsh 设为登录 shell、设置 Git 提交身份，并询问是否创建 GitHub SSH 密钥。**安装脚本不会安装 JAX 或 CUDA。**
 
 配置使用 Oh My Zsh 内置的 Agnoster 主题，以及 `git` 和 `fzf` 插件。Agnoster 的图标需要 Powerline/Nerd Font；字体安装说明见下文。
 
@@ -28,7 +28,7 @@ git pull --ff-only
 ./WSL/setup.sh
 ```
 
-如果配置文件与仓库版本不同，setup 会先在原文件旁创建带 `.bak.<timestamp>` 后缀的备份，再替换配置。登录 shell 的修改会在新开 WSL 终端后生效；当前终端不会自动切换。
+如果配置文件与仓库版本不同，安装脚本会先在原文件旁创建带 `.bak.<timestamp>` 后缀的备份，再替换配置。登录 shell 的修改会在新开 WSL 终端后生效；当前终端不会自动切换。
 
 ## 更新和重跑
 
@@ -40,7 +40,7 @@ git pull --ff-only
 ./WSL/setup.sh
 ```
 
-只更新 Oh My Zsh 和 fzf 的上游 checkout：
+只更新 Oh My Zsh 和 fzf 的上游仓库副本：
 
 ```bash
 ./WSL/setup.sh --update
@@ -52,7 +52,7 @@ git pull --ff-only
 
 ### 提示符仍然显示旧内容或 `user@host`
 
-当前终端或 `~/.zshrc` 可能仍在使用旧配置。先拉取仓库并重新运行 setup：
+当前终端或 `~/.zshrc` 可能仍在使用旧配置。先拉取仓库并重新运行安装脚本：
 
 ```bash
 cd "$HOME/system_setup"
@@ -61,7 +61,7 @@ git pull --ff-only
 exec zsh
 ```
 
-setup 会备份并更新 `~/.zshrc`。本机 WSL 提示符使用 Agnoster，并隐藏 `user@host`。
+安装脚本会备份并更新 `~/.zshrc`。本机 WSL 提示符使用 Agnoster，并隐藏 `user@host`。
 
 ### Agnoster 图标显示成方框或问号
 
@@ -112,18 +112,21 @@ JAX 的 CUDA wheel 已包含运行时库；仅运行 JAX 不需要额外安装 C
 
 **不要在 WSL 中安装 Linux NVIDIA 显示驱动。** 如果 Toolkit 安装在 `/usr/local/cuda/bin`，Zsh 配置会将其加入 `PATH`。仅在确有需要时为具体工具配置库路径，不要全局设置。
 
-## Git 和 SSH（可选）
+## GitHub SSH 密钥
 
-设置 Git 提交身份：
-
-```bash
-git config --global user.name "Your Name"
-git config --global user.email "you@example.com"
-```
-
-如果还没有 SSH key，可以创建一个，并将公钥添加到 [GitHub SSH keys](https://github.com/settings/keys)：
+安装脚本每次运行都会设置以下 Git 全局提交身份：
 
 ```bash
-test -f ~/.ssh/id_ed25519 || ssh-keygen -t ed25519 -C "you@example.com"
-cat ~/.ssh/id_ed25519.pub | clip.exe
+git config --global user.name "Lijie Ren"
+git config --global user.email "lijie.cs@gmail.com"
 ```
+
+安装脚本运行末尾会询问：
+
+```text
+Create a new GitHub SSH key? [Y/n]
+```
+
+按 Enter 或输入 `Y` 会创建 Ed25519 密钥，并在终端打印公钥；输入 `n` 会跳过。如果 `~/.ssh/id_ed25519` 已存在，脚本不会覆盖，而是打印现有公钥。
+
+将打印出的公钥复制到 [GitHub SSH 密钥设置](https://github.com/settings/keys)，选择 **New SSH key** 并粘贴。公钥以 `ssh-ed25519` 开头；不要分享或上传没有 `.pub` 后缀的私钥文件。

@@ -118,8 +118,11 @@ clone_if_missing() {
 
 echo "Installing Ubuntu packages..."
 sudo apt-get update
-packages=(ca-certificates curl git python3 python3-venv vim zsh)
+packages=(ca-certificates curl git openssh-client python3 python3-venv vim zsh)
 sudo apt-get install -y "${packages[@]}"
+
+git config --global user.name "Lijie Ren"
+git config --global user.email "lijie.cs@gmail.com"
 
 clone_if_missing https://github.com/ohmyzsh/ohmyzsh.git "$HOME/.oh-my-zsh"
 
@@ -141,6 +144,40 @@ if [[ $(getent passwd "$USER_NAME" | cut -d: -f7) != "$ZSH_PATH" ]]; then
   printf 'Failed to set %s as the login shell for %s.\n' "$ZSH_PATH" "$USER_NAME" >&2
   exit 1
 fi
+
+if ! read -r -p "Create a new GitHub SSH key? [Y/n] " CREATE_SSH_KEY; then
+  printf 'Unable to read the SSH key prompt response.\n' >&2
+  exit 1
+fi
+
+case "${CREATE_SSH_KEY,,}" in
+  ""|y|yes)
+    ssh_dir="$HOME/.ssh"
+    private_key="$ssh_dir/id_ed25519"
+    public_key="$private_key.pub"
+    mkdir -p "$ssh_dir"
+    chmod 700 "$ssh_dir"
+    if [[ -e $private_key || -L $private_key || -e $public_key || -L $public_key ]]; then
+      if [[ ! -s $private_key || ! -s $public_key ]]; then
+        printf 'An incomplete SSH key already exists at %s; refusing to overwrite it.\n' "$private_key" >&2
+        exit 1
+      fi
+      printf 'Using the existing SSH key; it was not overwritten.\n'
+    else
+      ssh-keygen -t ed25519 -C "lijie.cs@gmail.com" -f "$private_key"
+    fi
+    printf '\nAdd this public key to GitHub at https://github.com/settings/keys:\n'
+    cat -- "$public_key"
+    printf '\n'
+    ;;
+  n|no)
+    printf 'Skipping GitHub SSH key setup.\n'
+    ;;
+  *)
+    printf 'Please answer Y or n.\n' >&2
+    exit 2
+    ;;
+esac
 
 printf '\nSetup complete. Zsh is now your login shell; open a new WSL terminal to use it.\n'
 printf '\nAgnoster font setup (on Windows, not inside WSL):\n'
