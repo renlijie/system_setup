@@ -116,33 +116,12 @@ clone_if_missing() {
   git clone --depth 1 "$url" "$target"
 }
 
-ensure_link() {
-  local source=$1 target=$2
-
-  if [[ -L $target ]] && [[ $(readlink -f -- "$target") == $(readlink -f -- "$source") ]]; then
-    return
-  fi
-  if [[ -d $target && ! -L $target ]]; then
-    printf 'Refusing to replace directory with symlink: %s\n' "$target" >&2
-    return 1
-  fi
-  if [[ -e $target || -L $target ]]; then
-    backup_path "$target"
-    rm -- "$target"
-  fi
-  ln -s -- "$source" "$target"
-}
-
 echo "Installing Ubuntu packages..."
 sudo apt-get update
 packages=(ca-certificates curl git python3 python3-venv vim zsh)
 sudo apt-get install -y "${packages[@]}"
 
 clone_if_missing https://github.com/ohmyzsh/ohmyzsh.git "$HOME/.oh-my-zsh"
-mkdir -p "$HOME/.zsh/zfunctions"
-clone_if_missing https://github.com/sindresorhus/pure.git "$HOME/.zsh/pure"
-ensure_link "$HOME/.zsh/pure/pure.zsh" "$HOME/.zsh/zfunctions/prompt_pure_setup"
-ensure_link "$HOME/.zsh/pure/async.zsh" "$HOME/.zsh/zfunctions/async"
 
 clone_if_missing https://github.com/junegunn/fzf.git "$HOME/.fzf"
 
@@ -151,5 +130,16 @@ install_config "$SCRIPT_DIR/_zshrc" "$HOME/.zshrc"
 
 "$HOME/.fzf/install" --key-bindings --completion --no-update-rc
 
-printf '\nSetup complete. Start Zsh with: exec zsh\n'
-printf 'To make Zsh your login shell, run: chsh -s "$(command -v zsh)"\n'
+ZSH_PATH=$(command -v zsh)
+if ! grep -Fxq "$ZSH_PATH" /etc/shells; then
+  printf 'Zsh is not listed as a valid login shell in /etc/shells: %s\n' "$ZSH_PATH" >&2
+  exit 1
+fi
+USER_NAME=$(id -un)
+sudo chsh -s "$ZSH_PATH" "$USER_NAME"
+if [[ $(getent passwd "$USER_NAME" | cut -d: -f7) != "$ZSH_PATH" ]]; then
+  printf 'Failed to set %s as the login shell for %s.\n' "$ZSH_PATH" "$USER_NAME" >&2
+  exit 1
+fi
+
+printf '\nSetup complete. Zsh is now your login shell; open a new WSL terminal to use it.\n'

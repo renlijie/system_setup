@@ -17,10 +17,15 @@ cd "$HOME/system_setup"
 
 Git is installed first because it is needed to download the repository. The
 setup script then installs the base packages (Vim, Zsh, Python virtual-
-environment support, fzf and supporting tools), Oh My Zsh, the Pure prompt,
-and this repository's Vim/Zsh configuration. fzf and its Zsh key
-bindings/completion are installed on every run. **This setup does not install
-JAX or CUDA.** Run it as your normal user, not as root.
+environment support and supporting tools), Oh My Zsh, fzf, and this
+repository's Vim/Zsh configuration. It uses Oh My Zsh's built-in Agnoster
+theme with the `git` and `fzf` plugins. fzf and its Zsh key
+bindings/completion are installed on every run, and the script sets Zsh as your
+login shell automatically. **This setup does not install JAX or CUDA.** Run it
+as your normal user, not as root.
+
+Agnoster uses Powerline-style symbols. If they appear as boxes or question
+marks, set the Windows Terminal profile font to a Powerline/Nerd Font.
 
 If `~/system_setup` already exists, skip the `git clone` command and use:
 
@@ -32,7 +37,12 @@ git pull --ff-only
 
 The script is safe to rerun. If a configuration file differs from the
 repository version, the existing file is backed up alongside it with a
-`.bak.<timestamp>` suffix before replacement.
+`.bak.<timestamp>` suffix before replacement. The login shell change applies
+when you open a new WSL terminal; the current terminal stays in its existing
+shell.
+
+Vim loads `~/.vimrc` automatically at startup. To reload it, run `:source
+~/.vimrc` inside Vim, not `source ~/.vimrc` in the shell.
 
 ## Rerunning setup or updating components
 
@@ -43,23 +53,10 @@ cd "$HOME/system_setup"
 ./WSL/setup.sh --update
 ```
 
-Updates use fast-forward-only Git pulls and stop if a checkout has local
-changes. The script does not upgrade Ubuntu packages or change your login shell.
-
-To start using Zsh in the current terminal:
-
-```bash
-exec zsh
-```
-
-To make Zsh your login shell, run this separately:
-
-```bash
-chsh -s "$(command -v zsh)"
-```
-
-Open a new WSL terminal afterward. Use `./WSL/setup.sh --help` to see all
-options.
+Updates use fast-forward-only Git pulls for Oh My Zsh and fzf, and stop if a
+checkout has local changes. The script does not upgrade Ubuntu packages. Open
+a new WSL terminal after setup to start using Zsh. Use `./WSL/setup.sh --help`
+to see all options.
 
 ## Python and optional JAX
 
