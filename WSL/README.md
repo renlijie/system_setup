@@ -50,7 +50,7 @@ git pull --ff-only
 
 ## 常见问题
 
-### 提示符仍然显示 Pure 或 `user@host`
+### 提示符仍然显示旧内容或 `user@host`
 
 当前终端或 `~/.zshrc` 可能仍在使用旧配置。先拉取仓库并重新运行 setup：
 
@@ -61,7 +61,7 @@ git pull --ff-only
 exec zsh
 ```
 
-setup 会备份并更新 `~/.zshrc`。当前配置使用 Agnoster，不使用 Pure；本机 WSL 提示符也会隐藏 `user@host`。
+setup 会备份并更新 `~/.zshrc`。本机 WSL 提示符使用 Agnoster，并隐藏 `user@host`。
 
 ### Agnoster 图标显示成方框或问号
 

@@ -143,3 +143,7 @@ if [[ $(getent passwd "$USER_NAME" | cut -d: -f7) != "$ZSH_PATH" ]]; then
 fi
 
 printf '\nSetup complete. Zsh is now your login shell; open a new WSL terminal to use it.\n'
+printf '\nAgnoster font setup (on Windows, not inside WSL):\n'
+printf '1. Download Meslo Nerd Font: https://github.com/ryanoasis/nerd-fonts/releases/latest/download/Meslo.zip\n'
+printf '2. Install MesloLGSNerdFontMono-Regular.ttf (and optional bold/italic styles).\n'
+printf '3. Set Windows Terminal > Ubuntu profile > Appearance > Font face to "MesloLGS Nerd Font Mono".\n'
