@@ -3,6 +3,7 @@ export VISUAL=vim
 export EDITOR="$VISUAL"
 
 ZSH_THEME="agnoster"
+DEFAULT_USER="$USER"
 plugins=(git fzf)
 
 if [[ -d "$HOME/.fzf/bin" ]]; then
