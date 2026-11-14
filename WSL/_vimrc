@@ -21,12 +21,16 @@ function! s:goyo_enter()
   autocmd QuitPre <buffer> let b:quitting = 1
   cabbrev <buffer> q! let b:quitting_bang = 1 <bar> q!
   set scrolloff=999
-  Limelight0.2
+  if exists(':Limelight')
+    execute 'Limelight 0.2'
+  endif
 endfunction
 
 function! s:goyo_leave()
   set scrolloff=5
-  Limelight!
+  if exists(':Limelight')
+    execute 'Limelight!'
+  endif
   " Quit Vim if this is the only remaining buffer
   if b:quitting && len(filter(range(1, bufnr('$')), 'buflisted(v:val)')) == 1
     if b:quitting_bang

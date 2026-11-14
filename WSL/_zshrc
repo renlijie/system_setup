@@ -2,7 +2,7 @@
 # export PATH=$HOME/bin:/usr/local/bin:$PATH
 
 # Path to your oh-my-zsh installation.
-export ZSH="/home/lijie/.oh-my-zsh"
+export ZSH="$HOME/.oh-my-zsh"
 
 # Default editor.
 export VISUAL=vim
@@ -73,14 +73,16 @@ plugins=(
   git
 )
 
-source $ZSH/oh-my-zsh.sh
+if [[ -f "$ZSH/oh-my-zsh.sh" ]]; then
+  source "$ZSH/oh-my-zsh.sh"
+fi
 
-autoload -U promptinit; promptinit
-
-# optionally define some options
-PURE_CMD_MAX_EXEC_TIME=10
-
-prompt pure
+if [[ -f "$HOME/.zsh/zfunctions/prompt_pure_setup" ]]; then
+  autoload -U promptinit
+  promptinit
+  PURE_CMD_MAX_EXEC_TIME=10
+  prompt pure
+fi
 
 # User configuration
 
@@ -116,8 +118,21 @@ bindkey \^U backward-kill-line
 
 setopt nonomatch
 
-[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+if [[ -f "$HOME/.fzf.zsh" ]]; then
+  source "$HOME/.fzf.zsh"
+else
+  if [[ -f "$HOME/.fzf/shell/key-bindings.zsh" ]]; then
+    source "$HOME/.fzf/shell/key-bindings.zsh"
+  fi
+  if [[ -f "$HOME/.fzf/shell/completion.zsh" ]]; then
+    source "$HOME/.fzf/shell/completion.zsh"
+  fi
+  if [[ -d "$HOME/.fzf/bin" ]]; then
+    path=("$HOME/.fzf/bin" $path)
+  fi
+fi
 
-# NVIDIA CUDA TOOLKIT
-export PATH=/usr/local/cuda-12.1/bin${PATH:+:${PATH}}
-export LD_LIBRARY_PATH=/usr/local/cuda-12.1/lib64${LD_LIBRARY_PATH:+:${LD_LIBRARY_PATH}}
+# NVIDIA CUDA Toolkit, if installed in the standard WSL location.
+if [[ -d /usr/local/cuda/bin ]]; then
+  path=(/usr/local/cuda/bin $path)
+fi
