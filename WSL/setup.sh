@@ -59,6 +59,25 @@ if ! command -v sudo >/dev/null 2>&1; then
   exit 1
 fi
 
+printf 'If created, the SSH key will not have a passphrase.\n'
+if ! read -r -p "Create a new GitHub SSH key? [Y/n] " CREATE_SSH_KEY; then
+  printf 'Unable to read the SSH key prompt response.\n' >&2
+  exit 1
+fi
+
+case "${CREATE_SSH_KEY,,}" in
+  ""|y|yes)
+    CREATE_SSH_KEY=true
+    ;;
+  n|no)
+    CREATE_SSH_KEY=false
+    ;;
+  *)
+    printf 'Please answer Y or n.\n' >&2
+    exit 2
+    ;;
+esac
+
 SCRIPT_DIR=$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)
 
 backup_path() {
@@ -145,39 +164,27 @@ if [[ $(getent passwd "$USER_NAME" | cut -d: -f7) != "$ZSH_PATH" ]]; then
   exit 1
 fi
 
-if ! read -r -p "Create a new GitHub SSH key? [Y/n] " CREATE_SSH_KEY; then
-  printf 'Unable to read the SSH key prompt response.\n' >&2
-  exit 1
-fi
-
-case "${CREATE_SSH_KEY,,}" in
-  ""|y|yes)
-    ssh_dir="$HOME/.ssh"
-    private_key="$ssh_dir/id_ed25519"
-    public_key="$private_key.pub"
-    mkdir -p "$ssh_dir"
-    chmod 700 "$ssh_dir"
-    if [[ -e $private_key || -L $private_key || -e $public_key || -L $public_key ]]; then
-      if [[ ! -s $private_key || ! -s $public_key ]]; then
-        printf 'An incomplete SSH key already exists at %s; refusing to overwrite it.\n' "$private_key" >&2
-        exit 1
-      fi
-      printf 'Using the existing SSH key; it was not overwritten.\n'
-    else
-      ssh-keygen -t ed25519 -C "lijie.cs@gmail.com" -f "$private_key"
+if [[ $CREATE_SSH_KEY == true ]]; then
+  ssh_dir="$HOME/.ssh"
+  private_key="$ssh_dir/id_ed25519"
+  public_key="$private_key.pub"
+  mkdir -p "$ssh_dir"
+  chmod 700 "$ssh_dir"
+  if [[ -e $private_key || -L $private_key || -e $public_key || -L $public_key ]]; then
+    if [[ ! -s $private_key || ! -s $public_key ]]; then
+      printf 'An incomplete SSH key already exists at %s; refusing to overwrite it.\n' "$private_key" >&2
+      exit 1
     fi
-    printf '\nAdd this public key to GitHub at https://github.com/settings/keys:\n'
-    cat -- "$public_key"
-    printf '\n'
-    ;;
-  n|no)
-    printf 'Skipping GitHub SSH key setup.\n'
-    ;;
-  *)
-    printf 'Please answer Y or n.\n' >&2
-    exit 2
-    ;;
-esac
+    printf 'Using the existing SSH key; it was not overwritten.\n'
+  else
+    ssh-keygen -t ed25519 -C "lijie.cs@gmail.com" -f "$private_key" -N ""
+  fi
+  printf '\nAdd this public key to GitHub at https://github.com/settings/keys:\n'
+  cat -- "$public_key"
+  printf '\n'
+else
+  printf 'Skipping GitHub SSH key setup.\n'
+fi
 
 printf '\nSetup complete. Zsh is now your login shell; open a new WSL terminal to use it.\n'
 printf '\nAgnoster font setup (on Windows, not inside WSL):\n'

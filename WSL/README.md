@@ -69,18 +69,6 @@ Nerd Font 要安装在 **Windows** 上，而不是 WSL 里面。可以从 [Nerd 
 
 然后在 Windows Terminal 的 Ubuntu 配置文件中，将字体设为 **MesloLGS Nerd Font Mono**，并重启 Windows Terminal。
 
-### 在 Zsh 中执行 `source ~/.vimrc` 后出现错误
-
-不要在 Zsh 提示符中运行 `source ~/.vimrc`。`.vimrc` 是 Vim 配置，不是 shell 脚本。Vim 启动时会自动加载它；需要重新加载时，先打开 Vim，再执行：
-
-```vim
-:source ~/.vimrc
-```
-
-### Vim 报错 `E185: Cannot find color scheme 'seoul256'`
-
-当前配置只会在 Seoul256 插件已安装时启用该配色。如果配色仍不可用，在 Vim 中运行 `:PlugInstall`，完成后重启 Vim。
-
 ## Python 和可选 JAX
 
 建议在虚拟环境中安装 Python 包，不要直接安装到 Ubuntu 系统 Python：
@@ -121,12 +109,12 @@ git config --global user.name "Lijie Ren"
 git config --global user.email "lijie.cs@gmail.com"
 ```
 
-安装脚本运行末尾会询问：
+安装脚本开始安装前会询问：
 
 ```text
 Create a new GitHub SSH key? [Y/n]
 ```
 
-按 Enter 或输入 `Y` 会创建 Ed25519 密钥，并在终端打印公钥；输入 `n` 会跳过。如果 `~/.ssh/id_ed25519` 已存在，脚本不会覆盖，而是打印现有公钥。
+按 Enter 或输入 `Y` 会创建 Ed25519 密钥，不会再询问密钥口令，并在终端打印公钥；输入 `n` 会跳过。如果 `~/.ssh/id_ed25519` 已存在，脚本不会覆盖，而是打印现有公钥。无口令密钥不会加密私钥，请妥善保护 `~/.ssh/id_ed25519`，不要分享私钥。
 
 将打印出的公钥复制到 [GitHub SSH 密钥设置](https://github.com/settings/keys)，选择 **New SSH key** 并粘贴。公钥以 `ssh-ed25519` 开头；不要分享或上传没有 `.pub` 后缀的私钥文件。
