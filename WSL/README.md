@@ -18,6 +18,8 @@ cd "$HOME/system_setup"
 
 先安装 Git 才能克隆仓库。安装脚本会安装 Vim、Zsh、Python 虚拟环境支持等基础软件，以及 Oh My Zsh 和 fzf，并应用本仓库的 Vim/Zsh 配置。每次运行都会安装 fzf、将 Zsh 设为登录 shell、设置 Git 提交身份，并询问是否创建 GitHub SSH 密钥。**安装脚本不会安装 JAX 或 CUDA。**
 
+WSL 与 macOS 安装脚本共享 `common/` 中的 Vim/Zsh 配置。
+
 配置使用 Oh My Zsh 内置的 Agnoster 主题，以及 `git` 和 `fzf` 插件。Agnoster 的图标需要 Powerline/Nerd Font；字体安装说明见下文。
 
 如果 `~/system_setup` 已经存在，请跳过 `git clone`，运行：

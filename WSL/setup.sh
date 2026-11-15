@@ -79,6 +79,7 @@ case "${CREATE_SSH_KEY,,}" in
 esac
 
 SCRIPT_DIR=$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)
+COMMON_DIR=$(cd -- "$SCRIPT_DIR/../common" && pwd)
 
 backup_path() {
   local target=$1
@@ -147,8 +148,8 @@ clone_if_missing https://github.com/ohmyzsh/ohmyzsh.git "$HOME/.oh-my-zsh"
 
 clone_if_missing https://github.com/junegunn/fzf.git "$HOME/.fzf"
 
-install_config "$SCRIPT_DIR/_vimrc" "$HOME/.vimrc"
-install_config "$SCRIPT_DIR/_zshrc" "$HOME/.zshrc"
+install_config "$COMMON_DIR/_vimrc" "$HOME/.vimrc"
+install_config "$COMMON_DIR/_zshrc" "$HOME/.zshrc"
 
 "$HOME/.fzf/install" --key-bindings --completion --no-update-rc
 
