@@ -20,6 +20,10 @@ git pull --ff-only
 
 脚本通过 Homebrew 安装 Git、Vim 和 fzf，安装 Oh My Zsh，并应用 `common/` 中与 WSL 共用的 Vim/Zsh 配置。现有的 `~/.vimrc` 和 `~/.zshrc` 若与仓库配置不同，会先在原文件旁备份。脚本不会设置 Git 提交身份、创建 SSH 密钥，也不会安装 JAX 或 CUDA。
 
+## iTerm2 配置
+
+`iTerm2-default.json` 是可导入的 iTerm2 配置文件。在 iTerm2 的 Settings > Profiles > Other Actions 中选择 Import JSON Profiles 导入。新会话默认从用户主目录启动；如需其他起始位置，可在 profile 的 General > Initial Directory 中修改。
+
 只更新 Oh My Zsh：
 
 ```bash
@@ -28,4 +32,4 @@ git pull --ff-only
 
 更新只允许快进；如果 Oh My Zsh 仓库副本有本地改动，脚本会停止而不会覆盖。运行 `./macOS/setup.sh --help` 查看选项。
 
-macOS 自带 Zsh。重新打开终端即可加载新配置。Agnoster 主题的图标需要 Nerd Font；安装后在 Terminal 的字体设置中选择对应字体。
+macOS 自带 Zsh。重新打开终端即可加载新配置。Agnoster 主题的图标需要 Nerd Font。建议安装 `MesloLGS Nerd Font Mono`，然后在 iTerm2 的 Settings > Profiles > Text > Font 中选择它；本仓库的 iTerm2 配置也使用该字体。
