@@ -71,6 +71,14 @@ Nerd Font 要安装在 **Windows** 上，而不是 WSL 里面。可以从 [Nerd 
 
 然后在 Windows Terminal 的 Ubuntu 配置文件中，将字体设为 **MesloLGS Nerd Font Mono**，并重启 Windows Terminal。
 
+## Windows Terminal 配置
+
+`windows-terminal-settings.json` 是 Windows Terminal 的配置模板。先备份现有设置，再从 Windows Terminal 的 Settings > Open JSON file 打开 `settings.json`，将模板中的设置合并进去；不要直接覆盖现有文件，以免丢失已有配置或自动生成的 profile。
+
+模板包含 Solarized Dark 配色。请确认 Windows 上已安装 MesloLGS Nerd Font Mono，并且 `E:\Documents\Coding` 存在。该 Windows 起始目录设置在 defaults 中，但它不是 WSL 内部路径；Ubuntu profile 可能仍从发行版默认目录（通常是用户 home，例如 `/home/lijie`）启动。若要明确指定 WSL 内的目录，请在 Ubuntu profile 单独设置 `startingDirectory`，格式为 `//wsl.localhost/Ubuntu/home/<WSL用户名>`。
+
+目前 `defaultProfile` 指向 Command Prompt，因此默认新标签页会打开 CMD，而不是 Ubuntu。要让 Ubuntu 成为默认 profile，请将它改成 Ubuntu profile 的 GUID（模板中为 `{0ee58b45-a936-51a9-bc39-dc891871d817}`）。WSL profile 的 GUID 可能因本机配置不同，合并前请以本机 Windows Terminal 的 `settings.json` 为准。
+
 ## Python 和可选 JAX
 
 建议在虚拟环境中安装 Python 包，不要直接安装到 Ubuntu 系统 Python：
